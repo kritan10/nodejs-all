@@ -1,6 +1,0 @@
-[submodule "express-hello-world"]
-	path = express-hello-world
-	url = https://github.com/kritan10/express-hello-world
-[submodule "js-basics"]
-	path = js-basics
-	url = https://github.com/kritan10/js-basics

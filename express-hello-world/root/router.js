@@ -1,47 +1,35 @@
 import express from "express";
 import { DateTime } from "luxon";
+import { insertUser, selectAllUsers } from "./dao.js";
 
 const userRouter = express.Router()
 
 // refer to logger
 userRouter.use(logger)
 
-// list to replicate simple db
-let users = [
-    {
-        "id": 0,
-        "name": "Blake",
-        "likes": "separate",
-        "dislikes": "high",
-    },
-    {
-        "id": 1,
-        "name": "Chase",
-        "likes": "underline",
-        "dislikes": "mission",
-    },
-    {
-        "id": 2,
-        "name": "Mabel",
-        "likes": "whether",
-        "dislikes": "numeral",
-    }
-]
-
 // returns all users
 userRouter.get("/", (req, res) => {
-    res.json(users)
+    const cb = (users) => {
+        res.json(users)
+    }
+    selectAllUsers(cb)
 })
 
 // adds user
 userRouter.post("/", (req, res) => {
     try {
         const nUser = req.body
-        nUser.id = users.length
-        users = [...users, nUser]
-        res.json({ "message": "User added successfully" })
+        // nUser.id = users.length
+        // users = [...users, nUser]
+        const cb = (result) => {
+            if (result.insertId) {
+                res.json({ "message": "User added successfully" })
+            }
+        }
+        insertUser(nUser, cb)
     } catch (error) {
         console.log(error);
+        res.json({ "message": "Error adding user" })
     }
 })
 

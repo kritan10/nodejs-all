@@ -1,5 +1,5 @@
 import express, { json } from 'express'
-import { userRouter } from './router.js'
+import { userRouter } from './root/router.js'
 
 var app = express()
 const port = 3000
