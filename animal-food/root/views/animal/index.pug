@@ -1,0 +1,11 @@
+html
+  head
+    title= "Animal Food"
+  body
+    ul 
+      each animal in animals
+        li
+          div
+            h3= animal.animal 
+            p= animal.id 
+            p= animal.foodtype
