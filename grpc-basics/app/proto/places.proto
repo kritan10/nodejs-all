@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package places;
+
+service PlaceService {
+  rpc GetAllPlaces(ListPlacesRequest) returns (ListPlacesResponse) {};
+  rpc GetPlace(GetPlaceRequest) returns (GetPlaceResponse) {};
+  rpc CreatePlace(CreatePlaceRequest) returns (CreatePlaceResponse) {};
+  rpc UpdatePlace(UpdatePlaceRequest) returns (UpdatePlaceResponse) {};
+  rpc DeletePlace(DeletePlaceRequest) returns (DeletePlaceResponse) {};
+}
+
+message Place{
+    optional int32 id = 1;
+    string name = 2;
+    string location = 3;
+    bool isOpen = 4;
+}
+
+// requests
+message ListPlacesRequest {}
+
+message GetPlaceRequest {
+    int32 id = 1;
+}
+
+message CreatePlaceRequest {
+    Place place = 1;
+}
+
+message UpdatePlaceRequest {
+    int32 id = 1;
+    Place place = 2;
+}
+
+message DeletePlaceRequest {
+    int32 id = 1;
+}
+
+// responses
+message ListPlacesResponse {
+    repeated Place places = 1;
+}
+
+message GetPlaceResponse {
+    Place place = 1;
+}
+
+message CreatePlaceResponse {
+    bool success = 1;
+}
+
+message UpdatePlaceResponse {
+    bool success = 1;
+}
+
+message DeletePlaceResponse {
+    bool success = 1;
+}
