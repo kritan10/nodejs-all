@@ -7,6 +7,8 @@
 //     })
 // }
 
+import { hashSync } from "bcrypt";
+
 
 // function client2() {
 //     const breakBadService = new hello_proto.BreakBad('localhost:50051', grpc.credentials.createInsecure());
@@ -38,3 +40,5 @@
 // client1()
 // client2()
 // client3()
+
+// console.log(hashSync('asdf1234',10))

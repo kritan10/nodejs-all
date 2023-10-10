@@ -1,19 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { createConnection } from "mysql2";
 import Place from "../model/Place.js"
-
-const connection = createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'places',
-    port: 3306,
-});
-
-connection.query("SELECT 1", (err, result, fields) => {
-    if (err) throw err
-    console.log("\nDatabase Connected");
-})
+import connection from "./connection.js"
 
 /**
  * 

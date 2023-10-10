@@ -1,4 +1,4 @@
-import { createPlace, deletePlace, getAllPlaces, getPlace, updatePlace } from "../dao/PlaceDAO.js";
+import { createPlace, deletePlace, getAllPlaces, getPlace, updatePlace } from "../db/PlaceDAO.js";
 
 async function getAllPlacesService(call, callback) {
     const places = await getAllPlaces()

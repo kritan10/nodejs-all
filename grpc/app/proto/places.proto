@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package places;
 
+import "./utils.proto";
+
 service PlaceService {
-  rpc GetAllPlaces(ListPlacesRequest) returns (ListPlacesResponse) {};
+  rpc GetAllPlaces(utils.Empty) returns (ListPlacesResponse) {};
   rpc GetPlace(GetPlaceRequest) returns (GetPlaceResponse) {};
   rpc CreatePlace(CreatePlaceRequest) returns (CreatePlaceResponse) {};
   rpc UpdatePlace(UpdatePlaceRequest) returns (UpdatePlaceResponse) {};
