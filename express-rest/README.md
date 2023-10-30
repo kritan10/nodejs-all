@@ -1,9 +1,8 @@
-# Basic Express Rest API
+# express-rest
 
-First express REST API project.
+## Basic nodejs Express REST API
 
-### Features
-
-- Basic CRUD operations.
-- Use of middlewares.
-- User of routers.
+- Uses Express routers for feature separation
+- Uses middleware (json())
+- Data persistence in MySQL database (using mysql2 driver)
+- Usage of Promises for asynchronous querying
