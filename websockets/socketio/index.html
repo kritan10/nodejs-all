@@ -2,58 +2,8 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="index.css" />
 		<title>Socket.IO chat</title>
-		<style>
-			body {
-				margin: 0;
-				padding-bottom: 3rem;
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-			}
-
-			#form {
-				background: rgba(0, 0, 0, 0.15);
-				padding: 0.25rem;
-				position: fixed;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				display: flex;
-				height: 3rem;
-				box-sizing: border-box;
-				backdrop-filter: blur(10px);
-			}
-			#input {
-				border: none;
-				padding: 0 1rem;
-				flex-grow: 1;
-				border-radius: 2rem;
-				margin: 0.25rem;
-			}
-			#input:focus {
-				outline: none;
-			}
-			#form > button {
-				background: #333;
-				border: none;
-				padding: 0 1rem;
-				margin: 0.25rem;
-				border-radius: 3px;
-				outline: none;
-				color: #fff;
-			}
-
-			#messages {
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			#messages > li {
-				padding: 0.5rem 1rem;
-			}
-			#messages > li:nth-child(odd) {
-				background: #efefef;
-			}
-		</style>
 	</head>
 	<body>
 		<ul id="messages"></ul>
@@ -63,16 +13,27 @@
 		</form>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-			let counter = 1;
-
 			const SYSTEM_MESSAGE = 'a';
 			const USER_MESSAGE = 'b';
+			const CHAT_INIT = 'c';
+
+			let counter = 1;
+			let username;
 
 			const socket = io({
 				auth: { serverOffset: 0 },
 				ackTimeout: 10000,
 				retries: 3,
 			});
+
+			window.onload = function () {
+				username = prompt('Please enter your username:');
+				if (username === null) {
+					window.onload();
+				} else {
+					socket.emit(CHAT_INIT, username);
+				}
+			};
 
 			const form = document.getElementById('form');
 			const input = document.getElementById('input');
@@ -81,27 +42,43 @@
 			form.addEventListener('submit', (e) => {
 				e.preventDefault();
 				if (input.value) {
-					const clientOffset = `${socket.id}-${counter++}`;
-					socket.emit(USER_MESSAGE, input.value, clientOffset);
+					const clientOffset = `${username}-${counter++}`;
+					const message = {
+						content: input.value,
+						sender: username,
+						sendTime: (new Date()).toString().split(' ')[4],
+					};
+					socket.emit(USER_MESSAGE, message, clientOffset);
 					input.value = '';
 				}
 			});
 
-			socket.on(USER_MESSAGE, (msg, offset) => {
+			socket.on(USER_MESSAGE, (message, offset) => {
 				const item = document.createElement('li');
-				item.textContent = `[00:00:00] user: ${msg}`;
+				item.textContent = `[${message.sendTime}] ${message.sender}: ${message.content}`;
 				messages.appendChild(item);
 				window.scrollTo(0, document.body.scrollHeight);
 				socket.auth.serverOffset = offset;
-				//   cb({status:'OK'})
 			});
 
 			socket.on(SYSTEM_MESSAGE, (msg, user) => {
 				const item = document.createElement('li');
-				item.textContent = `${user} ${msg}.`;
+				item.textContent = createSystemMessage(msg, user);
 				window.scrollTo(0, document.body.scrollHeight);
 				messages.appendChild(item);
 			});
+
+			function createSystemMessage(msg, user) {
+				if (msg === 'CONNECT') {
+					return `${user} joined the chat.`;
+				}
+
+				if (msg === 'DISCONNECT') {
+					return `${user} left the chat.`;
+				}
+
+				return 'null';
+			}
 		</script>
 	</body>
 </html>
