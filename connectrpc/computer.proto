@@ -1,0 +1,43 @@
+package computer;
+
+service ComputerService {
+  rpc ListComputers(ListComputersRequest) returns (ListComputersResponse);
+  rpc GetComputer(GetComputerRequest) returns (Computer);
+  rpc CreateComputer(CreateComputerRequest) returns (Computer);
+  rpc UpdateComputer(UpdateComputerRequest) returns (Computer);
+  rpc DeleteComputer(DeleteComputerRequest) returns (Empty);
+}
+
+message Empty {
+  
+}
+
+message Computer {
+  optional string id = 1;
+  optional string model = 2;
+}
+
+
+message ListComputersRequest {
+
+}
+
+message ListComputersResponse {
+  repeated Computer computers = 1;
+}
+
+message GetComputerRequest {
+  optional string name = 1;
+}
+
+message CreateComputerRequest {
+  optional Computer computer = 1;
+}
+
+message UpdateComputerRequest {
+  optional Computer computer = 1;
+}
+
+message DeleteComputerRequest {
+  optional string name = 1;
+}
