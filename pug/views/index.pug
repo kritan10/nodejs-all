@@ -1,0 +1,14 @@
+html
+  head
+    title= title
+  body
+    h1= message
+
+    form(action="/update" method="POST")
+      label(for="username") Username:
+      input(type="text" name="username" required)
+
+      label(for="email") Email:
+      input(type="email" name="email" required)
+
+      button(type="submit") Submit
